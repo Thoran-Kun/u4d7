@@ -19,14 +19,21 @@ void main() {
     productList.add(new Product(8L, "La Storia Infinita", "Baby", 100.00));
     productList.add(new Product(9L, "Il Pendolo di Foucault", "Book", 110.00));
     productList.add(new Product(10L, "La Culla Perduta", "Baby", 125.00));
+    productList.add(new Product(11L, "maglietta", "Boys", 45.00));
+    productList.add(new Product(12L, "calzini", "Boys", 30.50));
+    productList.add(new Product(13L, "pantaloni da calcio", "Boys", 20.00));
     //------------------------------------------------------------------------------------
     //creo la lista dei customer
     List<Customer> customerList = new ArrayList<>();
-    Customer c1 = new Customer(1L, "Fabio Carlino", 1);
+    Customer c1 = new Customer(1L, "Fabio Carlino", 2);
     Customer c2 = new Customer(2L, "Antonio Todx", 2);
     customerList.add(c1);
     customerList.add(c2);
     //------------------------------------------------------------------------------------
+
+    //imposto le date da dover rientrare per poter usufruire dello sconto
+    LocalDate start = LocalDate.of(2021, 2, 1);
+    LocalDate end = LocalDate.of(2021, 4, 1);
     //creo la lista degli ordini
     List<Order> orderList = new ArrayList<>();
     orderList.add(new Order(1L, "delivered", LocalDate.now(), LocalDate.now().plusDays(3), List.of(productList.get(2)), c1));
@@ -37,11 +44,21 @@ void main() {
             .filter(p -> p.getCategory().equals("Book"))
             .filter(p -> p.getPrice() >= 100)
             .toList();
-    System.out.println("I libri che costano 100€ o di più sono: "booksMax100);
+    System.out.println("I libri che costano 100€ o di più sono: " + booksMax100);
 
     //ESERCIZIO 2
-    List<Product> babyPoducts = productList.stream()
-            .filter(p -> p.getCategory().equals("Baby")).toList();
-    System.out.println("I prodotti dei bambini sono: "babyPoducts);
+    List<Order> babyPoducts = orderList.stream()
+            .filter(o -> o.getProduct().stream()
+                    .anyMatch(p -> p.getCategory().equals("Baby")))
+            .toList();
+    System.out.println("I prodotti dei bambini sono: " + babyPoducts);
+
+    //ESERCIZIO 3
+    List<Double> boys10PerCent = productList.stream()
+            .filter(p -> p.getCategory().equals("Boys"))
+            .map(p -> p.getPrice() * 0.90).toList();
+    System.out.println("i prezzi per la categoria Boys è: " + boys10PerCent);
+
+    //ESERCIZIO 4
 
 }
