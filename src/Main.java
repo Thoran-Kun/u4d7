@@ -32,5 +32,11 @@ void main() {
     orderList.add(new Order(1L, "delivered", LocalDate.now(), LocalDate.now().plusDays(3), List.of(productList.get(2)), c1));
     //------------------------------------------------------------------------------------
 
+    List<Product> booksMax100 = productList.stream()
+            .filter(p -> p.getCategory().equals("Book"))
+            .filter(p -> p.getPrice() >= 100)
+            .toList();
+    System.out.println(booksMax100);
+
 
 }
